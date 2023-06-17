@@ -10,8 +10,8 @@ class Board:
 
     def print_board(self):
         print()
-        for x in range(0, self.size):
-            for y in range(0, self.size):
+        for y in range(0, self.size):
+            for x in range(0, self.size):
                 if self.state[x, y] == 1:
                     print(" X", end='')
                 elif(self.state[x, y] == 2):
@@ -35,14 +35,33 @@ class Board:
             return False
 
         for i in reversed(range(self.size)):
-            if(self.state[i, pos] == 0):
-                self.state[i, pos] = self.turn
-                self.turn = 3 - self.turn #3-1=2, 3-2=1
-                return True
+            if(self.state[pos, i] == 0):
+                self.state[pos, i] = self.turn
+                if self.check_win(pos, i):
+                    return True
+                self.turn = 3 - self.turn # 3-1=2, 3-2=1
+                return False
         print("Row full")
         return False
 
+    def check_win(self, x, y): # returns True in case of win, false otherwise
+        down_diag, horizontal, up_diag, vert = 0, 0, 0, 0
+        for i in [-3,-2,-1,1,2,3]: # Skipping 0, as we know that value is equal to the curr turn
+            if x+i >= 0 and x+i < self.size:
+                if self.state[x+i, y] == self.turn:
+                    horizontal += 1
+                    if horizontal == 3:
+                        return True
+                else:
+                    horizontal = 0
+
+        return False
+                
+
 board = Board()
-while True:
-    if board.move(input("Input move - ")):
-        board.print_board()
+won = False
+while not won:
+    won = board.move(input("Input move - "))
+    board.print_board()
+
+print("Winner")
