@@ -50,11 +50,29 @@ class Board:
             if x+i >= 0 and x+i < self.size:
                 if self.state[x+i, y] == self.turn:
                     horizontal += 1
-                    if horizontal == 3:
+                    if horizontal >= 3:
                         return True
                 else:
                     horizontal = 0
-
+                if y-i >= 0 and y-i < self.size:
+                    if self.state[x+i, y-i] == self.turn:
+                        down_diag += 1
+                        if down_diag >= 3:
+                            return True
+                    else:
+                        down_diag = 0
+                if y+i >= 0 and y+i < self.size:
+                    if self.state[x+i, y+i] == self.turn:
+                        up_diag += 1
+                        if up_diag >= 3:
+                            return True
+                    else:
+                        up_diag = 0
+            if y+i >=0 and y+i < self.size:
+                if self.state[x, y+i] == self.turn:
+                    vert += 1
+                    if vert >= 3:
+                        return True
         return False
                 
 
