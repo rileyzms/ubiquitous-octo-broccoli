@@ -79,7 +79,7 @@ class Board:
 board = Board()
 won = False
 while not won:
-    won = board.move(input("Input move - "))
+    won = board.move(input("Player {}, input move - ".format(board.turn)))
     board.print_board()
 
-print("Winner")
+print("Player {} wins!".format(board.turn))
