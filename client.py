@@ -1,34 +1,32 @@
 import socket
-import time
-import board.py
+from board import Board
 
 HOST = "localhost"
 PORT = 45651
 
-class Client():
-    def __init__(self): # connect on class init
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((HOST, PORT))
-        s.listen()
-        self.conn, addr = s.accept()
-        print("Server - Connected by", addr)
-    def send_move(self):
-        time.sleep(1)
-        self.conn.sendall(b'test')
+class Client(): # connect on class init
+    def __init__(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((HOST, PORT))
+        print("Client - Connected")
+    def send_move(self, move):
+        self.sock.sendall(int.to_bytes(move))
     def recv_move(self):
-        data = self.conn.recv(512)
-        print("Received ", repr(data))
+        return int.from_bytes(self.sock.recv(256))
     def close(self):
-        self.conn.close()
+        self.sock.close()
 
+board = Board()
 c = Client()
-b = Board()
 while True:
-    i = b.handle_move()
-    c.send_move(i)
-    if i = -1:
+    print("Awaiting move from other player")
+    move = c.recv_move()
+    board.move(move) # invoke move() directly as the received move is valid
+    if move == -1:
         break
-    c.recv_move
-    if i = -1:
+    move = board.handle_move()
+    c.send_move(move)
+    if move == -1:
         break
+
 c.close()

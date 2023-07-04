@@ -72,11 +72,9 @@ class Board:
                     if vert >= 3:
                         return True
         return False
-    def handle_move():
+    def handle_move(self, i = -1):
         i = input("Please input move - ")
-        while !board.move(i):
+        self.print_board()
+        while not self.move(i):
             i = input("Invalid move, please input move - ")
-        if check_win():
-            return -1
-        board.print_board()
-        return i
+        return int(i)
