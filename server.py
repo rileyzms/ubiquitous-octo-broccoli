@@ -18,8 +18,8 @@ class Server():
     def close(self):
         self.conn.close()
 
-board = Board()
 s = Server()
+board = Board()
 while True:
     move = board.handle_move()
     s.send_move(move)
